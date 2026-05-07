@@ -1,0 +1,20 @@
+# arduino build artifacts
+*.hex
+*.elf
+*.bin
+build/
+.build/
+
+# editor / os
+.DS_Store
+.vscode/
+.idea/
+*.swp
+
+# testing and validation
+/testing
+/testing/*
+claude.md
+changelog.md
+*.agent.md
+*.claude.md
