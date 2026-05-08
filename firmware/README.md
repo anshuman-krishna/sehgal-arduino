@@ -2,17 +2,17 @@
 
 this is where the shoe's brain lives.
 
-the folder is organised by **what each part of the system does**, not by what file format it is. the goal is that anyone reading this — including future-me — can find the right place to look without hunting.
+the folder is organised by **what each part of the system does** rather than by file format. the goal is that anyone reading this, including future-me, can find the right place to look without hunting.
 
 ```
 firmware/
 ├── main/         the active multi-file sketch (open main.ino in arduino IDE)
 ├── experiments/  preserved bring-up sketches (phase 1 hello-world, piezo debug)
-├── sensors/      intent stub — future home of standalone sensor readers
-├── modes/        intent stub — future home of one-file-per-mode
-├── animations/   intent stub — future home of reusable animation primitives
-├── utils/        intent stub — future home of shared config/state
-└── power/        intent stub — battery monitoring, low-battery emotional state
+├── sensors/      intent stub, future home of standalone sensor readers
+├── modes/        intent stub, future home of one-file-per-mode
+├── animations/   intent stub, future home of reusable animation primitives
+├── utils/        intent stub, future home of shared config/state
+└── power/        intent stub, battery monitoring, low-battery emotional state
 ```
 
 ---
@@ -27,7 +27,7 @@ we are at **phase 8** on the firmware side. phases 1 through 6 are all live in a
 - EEPROM-backed mode and public/private persistence
 - idle dim-down (30s → 2min) with instant wake on any classified gesture
 
-phases 7 and 8 are physical and don't change firmware. phase 5 is also physical. the next firmware-side work is phase 10 — and that's deliberately speculative (designs in `/experiments/`, no implementation yet).
+phases 7 and 8 are physical and don't change firmware. phase 5 is also physical. the next firmware-side work is phase 10, which is deliberately speculative for now (designs live in `/experiments/`, with no implementation yet).
 
 ## what's actually being compiled
 
@@ -46,11 +46,11 @@ the arduino IDE auto-compiles every `.h`/`.ino` in a sketch folder, so this work
 
 ## about the intent stubs
 
-the sibling folders (`sensors/`, `modes/`, `animations/`, `utils/`, `power/`) each contain a short header file documenting what will live there once we migrate to **PlatformIO**. they're not in the build today — the arduino IDE doesn't traverse subfolders.
+the sibling folders (`sensors/`, `modes/`, `animations/`, `utils/`, `power/`) each contain a short header file documenting what will live there once we migrate to **PlatformIO**. they sit outside the build today because the arduino IDE doesn't traverse subfolders.
 
 this is deliberate. the intended architecture is visible from day one, and the migration becomes a mechanical move-files-into-the-shape-they-already-imply rather than a redesign.
 
-PlatformIO migration is tracked as an open question in `testing/changelog.md` (local-only, gitignored). it'll happen when there's a forcing function — extracted libraries, unit tests, or dependency conflicts.
+PlatformIO migration is tracked as an open question in `testing/changelog.md` (local-only, gitignored). it'll happen when there's a forcing function: extracted libraries, unit tests, or dependency conflicts.
 
 ---
 
@@ -67,7 +67,7 @@ if it doesn't behave as expected, the per-phase troubleshooting in the root `REA
 
 ## the bring-up sketches
 
-`firmware/experiments/` holds two known-good sketches. they're not part of the active firmware — they exist as bring-up tools and a fallback.
+`firmware/experiments/` holds two known-good sketches. they sit alongside the active firmware as bring-up tools and a fallback you can flash any time.
 
 | sketch | what it does | when to use |
 | ------ | ------------ | ----------- |
@@ -83,20 +83,20 @@ both are documented in the root `README.md` § phase 1 / § phase 2.
 these are the rules the firmware is held to. they exist because they have already saved us from past mistakes (and will again).
 
 - **no `delay()` past phase 1.** every animation runs on `millis()` so the system stays responsive to taps. `main.ino` and every mode draw function obey this.
-- **one mode per file** is the post-PlatformIO target. today they all live in `firmware/main/modes.h` — fine for six, would not be fine for twelve.
-- **animation primitives are shared.** breathing, pulsing, waving — these are utilities in `animations.h`, not duplicated per mode.
+- **one mode per file** is the post-PlatformIO target. today they all live in `firmware/main/modes.h`, which works fine for six modes and would feel cramped at twelve.
+- **animation primitives are shared.** breathing, pulsing, waving: these live as utilities in `animations.h` so each mode composes them instead of carrying its own copy.
 - **all pin numbers, LED counts, brightness defaults, and timing constants live in `firmware/main/config.h`.** nothing magical scattered through code.
-- **readability beats cleverness.** this is a wearable, not a contest. a junior reader should be able to understand any single file in under five minutes.
+- **readability beats cleverness.** this is a wearable that has to be maintained by humans. a junior reader should be able to understand any single file in under five minutes.
 - **comments explain *why*, not *what*.** the code already says what it does.
 - **gestures and modes stay decoupled.** `gestures.h` doesn't know what taps mean; `modes.h` doesn't know how taps are classified. `main.ino` is the only place that wires them together. swapping the gesture classifier (e.g., adding an FSR for long-press) shouldn't touch `modes.h`.
-- **brightness composes uniformly.** modes always render at full intensity. boot-fade × idle-decay × private-dim collapse into a single multiplier in `main.ino` and apply once per frame. modes never mutate brightness themselves.
+- **brightness composes uniformly.** modes always render at full intensity. boot-fade × idle-decay × private-dim collapse into a single multiplier in `main.ino` and apply once per frame. modes leave brightness alone themselves.
 
 ---
 
 ## what each subfolder will hold (post-PlatformIO target)
 
 ### `main/`
-the entry point. boots the system, owns the loop, dispatches to the active mode, composes brightness. today it also hosts every `.h` in the sketch — that splits up once cross-folder includes are real.
+the entry point. boots the system, owns the loop, dispatches to the active mode, composes brightness. today it also hosts every `.h` in the sketch; that splits up once cross-folder includes are real.
 
 ### `sensors/`
 the piezo reader (today inside `main/gestures.h`) lands here as a standalone module. anything that reads from the world: piezo today, accelerometer (phase 10 motion-reactive), LDR (phase 10 adaptive-brightness), maybe an FSR for long-press support.
@@ -108,8 +108,8 @@ each emotional mode in its own file. they all expose the same draw contract: ren
 the small, sharp tools that modes compose: breathe, pulse, wave, smoothstep, gamma8, blendColor. modes are *expressions*; animations are *primitives*. the rule for any primitive: stateless. callers pass time and any state they want to track.
 
 ### `utils/`
-- `config.h` — pins, counts, thresholds, brightness defaults, EEPROM addresses
-- `state.h` — the running state of the system (current mode, last tap, idle timer, private flag)
+- `config.h`: pins, counts, thresholds, brightness defaults, EEPROM addresses
+- `state.h`: the running state of the system (current mode, last tap, idle timer, private flag)
 
 ### `power/`
-battery voltage reading, low-battery emotional state, power-down behaviour. matters once the shoe is being worn for hours. premature power optimization is a waste — interaction quality first, runtime second.
+battery voltage reading, low-battery emotional state, power-down behaviour. matters once the shoe is being worn for hours. premature power optimization is a waste of effort: get interaction quality right first, then come back for runtime.

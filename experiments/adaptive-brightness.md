@@ -1,6 +1,6 @@
 # adaptive brightness (phase 10 design proposal)
 
-> the shoe scales its output to ambient light. brighter in sun, gentler in dim rooms, never inappropriately loud or invisible.
+> the shoe scales its output to ambient light. brighter in sun, gentler in dim rooms, always pitched right for the room it's in.
 
 ## what it adds
 
@@ -16,13 +16,13 @@ the wearer never has to think about it. the shoe just behaves correctly across c
 
 ## why it's interesting
 
-this is the unsexy expansion that makes the project genuinely wearable. the current shoe in a dimly-lit restaurant feels too loud; the same shoe outdoors in sunlight feels invisible. neither is the shoe's fault — it's the lack of context awareness.
+this is the unsexy expansion that makes the project genuinely wearable. the current shoe in a dimly-lit restaurant feels too loud; the same shoe outdoors in sunlight feels invisible. both reactions trace back to the shoe holding one fixed brightness across every context.
 
 adaptive brightness also opens an interaction: the wearer can use **shadow** as input. cup your hand over the shoe and it brightens (it thinks you've moved into a darker context). a small but charming feedback loop that costs nothing extra to add.
 
 ## parts list
 
-- 1 × LDR (photoresistor) — small, ~$0.50
+- 1 × LDR (photoresistor), small, ~$0.50
 - 1 × 10kΩ resistor (the bottom half of a voltage divider)
 - 2 × jumper wires
 
@@ -37,7 +37,7 @@ a classic voltage divider on an analog pin:
 ```
     5V ────┬────────────┐
            │            │
-          LDR          (top half — variable, low in light, high in dark)
+          LDR          (top half, variable, low in light, high in dark)
            │            │
            ├────────────► A1  (the analog input)
            │
@@ -65,7 +65,7 @@ main.ino reads `ambientPreferredCeiling()` once per second (changes slowly) and 
 
 ### smoothing
 
-raw LDR readings are noisy. need a rolling average (e.g., last 10 samples) plus an additional slow-following filter — when the wearer steps from a dim hallway into bright sunlight, the shoe should adapt over a few seconds, not instantly. instant adaptation feels mechanical; slow following feels alive.
+raw LDR readings are noisy. you need a rolling average (e.g., last 10 samples) plus an additional slow-following filter. when the wearer steps from a dim hallway into bright sunlight, the shoe should adapt over a few seconds. instant adaptation feels mechanical; slow following feels alive.
 
 ```cpp
 // pseudo-code
@@ -89,10 +89,10 @@ a 5% blend per sample at 5Hz means a ~4-second time constant. tweak to taste.
 
 ## risks and open questions
 
-- **LDR placement**: the LDR has to see ambient light, not the shoe's own LEDs. if mounted carelessly, the strip's output washes out the LDR's reading and creates a feedback loop (shoe gets brighter → LDR sees more light → shoe gets dimmer → loop). solution: mount the LDR pointing *up*, away from the strip, or shield it.
+- **LDR placement**: the LDR has to see ambient light rather than the shoe's own LEDs. if mounted carelessly, the strip's output washes out the LDR's reading and creates a feedback loop (shoe gets brighter → LDR sees more light → shoe gets dimmer → loop). solution: mount the LDR pointing *up*, away from the strip, or shield it.
 - **flex covering the LDR**: shoes flex while walking. if the LDR is mounted somewhere that gets covered by clothing or the foot's shadow during walking, it'll oscillate weirdly. test mounting locations.
-- **what does "appropriate" actually mean?**: this is a design call. is "appropriate in a movie theatre" 5%? 1%? do we have a hard floor below which the shoe should go fully off? recommend never going off (consistent with the project's "never fully dark" principle).
-- **shadow as input**: this is fun but might cause unintended dimming when the wearer crosses their legs, sits at a desk, etc. needs to be desirable, not intrusive.
+- **what does "appropriate" actually mean?**: this is a design call. is "appropriate in a movie theatre" 5%? 1%? do we have a hard floor below which the shoe should go fully off? the recommendation is to keep the shoe lit at a faint floor even in pitch dark, in keeping with the project's "always alive" principle.
+- **shadow as input**: this is fun but might cause unintended dimming when the wearer crosses their legs, sits at a desk, etc. the goal is for it to feel desirable rather than intrusive.
 - **calibration across devices**: different LDRs have different sensitivity. a hard-coded mapping might not generalize. consider an auto-calibration that learns "this is the brightest I've seen lately" and "this is the dimmest" over a few hours of wear.
 
 ## decision points
@@ -101,10 +101,10 @@ before building, you'd need to answer:
 
 1. **mounting location**: top of the heel module, pointing up? or somewhere on the side? this is mostly an aesthetic/wearability call.
 2. **time constant**: faster adaptation feels responsive but mechanical; slower feels alive but laggy. recommend ~4 seconds, validate in real wear.
-3. **interact with private mode?** private already dims by 50%. should adaptive brightness compose with that, or override it? recommend compose — both signals are valid context.
+3. **interact with private mode?** private already dims by 50%. should adaptive brightness compose with that, or override it? recommend compose, both signals are valid context.
 4. **interact with idle decay?** idle and adaptive ambient both dim the shoe. they should compose multiplicatively, same as private. needs careful mental model so they don't double-dim into invisibility.
 5. **auto-calibration vs hard-coded mapping**: hard-coded is simpler; auto-calibration is robust to LDR variation. recommend hard-coded for v1, auto-calibration as a follow-up if needed.
 
 ## one-paragraph elevator pitch
 
-> add a single LDR and the shoe becomes context-aware. brighter in daylight, gentler at dusk, almost off in dim restaurants. the wearer never thinks about it; it just behaves correctly. and as a bonus, cupping your hand over the shoe makes it brighter — turning a hardware compromise into a small, charming interaction.
+> add a single LDR and the shoe becomes context-aware. brighter in daylight, gentler at dusk, almost off in dim restaurants. the wearer never thinks about it; it just behaves correctly. and as a bonus, cupping your hand over the shoe makes it brighter, turning a hardware compromise into a small, charming interaction.

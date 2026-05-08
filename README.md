@@ -2,7 +2,7 @@
 
 > an experimental wearable shoe that turns intentional foot taps into emotional light.
 
-this project lives at the intersection of **wearable technology**, **interaction design**, and **emotional communication**. it is not a blinking-LED demo. it is a small, ongoing exploration into how a single human gesture, a tap of the heel, can become a readable emotional expression.
+this project lives at the intersection of **wearable technology**, **interaction design**, and **emotional communication**. it's a small, ongoing exploration into how a single human gesture, a tap of the heel, can become a readable emotional expression.
 
 the interaction loop is intentionally simple:
 
@@ -80,7 +80,7 @@ each phase ends with both a working artifact and a written reflection on what wa
 
 ## tracking your progress
 
-as you wire, flash, and wear each phase, log what you observe in **[`validate.md`](./validate.md)** at the repo root. it's a structured checklist of every hardware-side check, with space under each item for measurements, notes, and decisions. tick items as you verify them. the file is the project's public hardware-truth logbook, it's how anyone reading the repo can see *what was actually built*, not just what was written.
+as you wire, flash, and wear each phase, log what you observe in **[`validate.md`](./validate.md)** at the repo root. it's a structured checklist of every hardware-side check, with space under each item for measurements, notes, and decisions. tick items as you verify them. that file is the project's public hardware-truth logbook, it's how anyone reading the repo can see *what was actually built* alongside what was written.
 
 ## the rest of the repository
 
@@ -90,7 +90,7 @@ beyond firmware and validation, the project has two more layers, both of which b
 | ------------------- | -------------------------------------------------------------------- |
 | [`firmware/`](./firmware/) | the shoe's brain, the multi-file arduino sketch in `firmware/main/` |
 | [`portfolio/`](./portfolio/) | five working documents that explain *what was built and why*         |
-| [`experiments/`](./experiments/) | four phase 10 design proposals, paper architectures, not yet built |
+| [`experiments/`](./experiments/) | four phase 10 design proposals, paper architectures awaiting their build phase |
 
 if you only have time to read three things in this repo: this README, `portfolio/system-architecture.md`, and `portfolio/interaction-storyboard.md`. those three together explain the whole project.
 
@@ -441,7 +441,7 @@ phase 5 is checklist-driven, not "flash and see." open **[`validate.md`](./valid
 - weight balance, does the modded shoe feel asymmetric?
 - safety verification, every check is non-negotiable
 
-each item has space for notes, photos, and decisions. iteration is expected. the first heel module you build will probably be wrong. the second one will probably also be wrong. that's normal, the iteration is the project, not a failure to plan.
+each item has space for notes, photos, and decisions. iteration is expected. the first heel module you build will probably be wrong. the second one will probably also be wrong. that's the project, the iteration is the work, planning around it is what carries you through.
 
 ## what to capture for the portfolio
 
@@ -451,7 +451,7 @@ phase 5 is the visually richest phase so far. **[`validate.md`](./validate.md)**
 
 # phase 6: emotional communication layer
 
-> goal: give the shoe an inner life. it should feel like it has moods, attention, and self-restraint, not just a gesture-driven mode picker.
+> goal: give the shoe an inner life. it should feel like it has moods, attention, and self-restraint, more than a gesture-driven mode picker would.
 
 phase 6 is firmware-only. there is no new wiring. the same `firmware/main/main.ino` you flashed for phase 3 / 4 already contains it. flashing the latest from this repo gives you all of it.
 
@@ -645,7 +645,7 @@ honest answers here matter more than ticked boxes. a "no, this still looks impro
 
 > goal: turn the working shoe and everything that went into it into a thing someone else can read, understand, and respond to, without you in the room.
 
-phase 9 is **not about marketing**. it's about making sure the project survives the moment it leaves your hands. a future collaborator, a portfolio reviewer, or future-you in six months should be able to open this repo and understand the project as a piece of design thinking, not just a hardware build.
+phase 9 is about making sure the project survives the moment it leaves your hands. a future collaborator, a portfolio reviewer, or future-you in six months should be able to open this repo and understand it as a piece of design thinking, with the hardware build sitting underneath as evidence.
 
 there is no firmware deliverable. the deliverable is documentation that already mostly lives in the [`portfolio/`](./portfolio/) folder.
 
@@ -680,7 +680,7 @@ every phase 9 check sits in **[`validate.md`](./validate.md)** under "phase 9, p
 
 ## a note on tone
 
-the portfolio is *not* a sales document. the strongest version of it shows the gap between what you tried and what you learned. a single page of three failed heel-module mockups, captioned honestly, is worth more than a polished hero shot. process beats product, that rule applies all the way through.
+think of the portfolio as a working notebook rather than a sales document. the strongest version of it shows the gap between what you tried and what you learned. a single page of three failed heel-module mockups, captioned honestly, is worth more than a polished hero shot. process beats product, that rule applies all the way through.
 
 ---
 
@@ -714,7 +714,7 @@ each builds on the last in complexity and impact. don't try to do all four in on
 
 ## what to validate
 
-phase 10 validation is the **decision-making**, not the building. every check sits in **[`validate.md`](./validate.md)** under "phase 10, experimental expansion". the most important items:
+phase 10 validation lives in **decision-making** rather than building. every check sits in **[`validate.md`](./validate.md)** under "phase 10, experimental expansion". the most important items:
 
 - each of the four proposals has a dated `pursue / defer / kill` decision with reasoning
 - if you're actually pursuing one, parts ordered, debug sketch written, integration behind a `#ifdef` guard so phases 1–6 still flash cleanly
@@ -722,7 +722,7 @@ phase 10 validation is the **decision-making**, not the building. every check si
 
 ## the principle
 
-the test for whether an expansion is worth building: **what new emotional capability does this unlock?** every proposal in `experiments/` is designed to pass that test. if a future idea can't pass it, don't add it, even if it's technically interesting. the project's strength is its narrowness.
+the test for whether an expansion is worth building: **what new emotional capability does this unlock?** every proposal in `experiments/` is designed to pass that test. a future idea that fails it should stay parked, even when it's technically interesting. the project's strength is its narrowness.
 
 ---
 
