@@ -73,14 +73,26 @@ this is a long project broken into small, testable phases. each one is a stable 
 | 6     | emotional communication layer     | ✅ firmware ready            |
 | 7     | safety & reliability              | 🔧 checklist driven          |
 | 8     | aesthetic refinement              | 🔧 checklist driven          |
-| 9     | portfolio system                  | (not yet started)            |
-| 10    | experimental expansion            | (not yet started)            |
+| 9     | portfolio system                  | ✅ docs ready                |
+| 10    | experimental expansion            | 🧪 design proposals ready    |
 
 each phase ends with both a working artifact and a written reflection on what was learned.
 
 ## tracking your progress
 
 as you wire, flash, and wear each phase, log what you observe in **[`validate.md`](./validate.md)** at the repo root. it's a structured checklist of every hardware-side check, with space under each item for measurements, notes, and decisions. tick items as you verify them. the file is the project's public hardware-truth logbook — it's how anyone reading the repo can see *what was actually built*, not just what was written.
+
+## the rest of the repository
+
+beyond firmware and validation, the project has two more layers — both of which become primary material in phase 9.
+
+| folder              | what it holds                                                        |
+| ------------------- | -------------------------------------------------------------------- |
+| [`firmware/`](./firmware/) | the shoe's brain — the multi-file arduino sketch in `firmware/main/` |
+| [`portfolio/`](./portfolio/) | five working documents that explain *what was built and why*         |
+| [`experiments/`](./experiments/) | four phase 10 design proposals — paper architectures, not yet built |
+
+if you only have time to read three things in this repo: this README, `portfolio/system-architecture.md`, and `portfolio/interaction-storyboard.md`. those three together explain the whole project.
 
 ---
 
@@ -297,8 +309,6 @@ try one change at a time so you can feel its effect.
 
 ---
 
----
-
 # phase 3 — bringing all six emotional modes online
 
 > goal: see every mode work, switch between them, and check that each one is emotionally readable.
@@ -358,10 +368,10 @@ ring-out — the piezo's natural mechanical bounce after a hit looks like a seco
 something is jostling the piezo. check the wiring is clean and the bleed resistor is in place. if you cup the shoe in your hand and stand still, it should be silent. if it isn't, there's noise getting in.
 
 **double-tap doesn't register, only single-taps fire.**
-your two taps are arriving more than 400ms apart. either tap faster, or raise `DOUBLE_TAP_WINDOW_MS` in `config.h` (try 500–600ms).
+your two taps are arriving more than 400ms apart. either tap faster, or raise `MULTI_TAP_WINDOW_MS` in `config.h` (try 500–600ms).
 
 **the strip flickers during transitions.**
-you may be running out of arduino SRAM — the cross-fade uses two scratch buffers in addition to the live one. if your `LED_COUNT` is far above 30, lower it or skip the cross-fade. log the issue in the changelog.
+you may be running out of arduino SRAM — the cross-fade uses two scratch buffers in addition to the live one. if your `LED_COUNT` is far above 30, lower it or skip the cross-fade. log the issue under phase 3 in **[`validate.md`](./validate.md)**.
 
 ---
 
@@ -386,7 +396,7 @@ these are deliberately simple. real noise rejection (telling intentional taps fr
 inside `firmware/main/config.h`:
 
 ```cpp
-#define DOUBLE_TAP_WINDOW_MS   400   // how long to wait for a second tap
+#define MULTI_TAP_WINDOW_MS    400   // how long to wait between taps in a sequence
 #define WALKING_TAP_BUDGET     3     // taps allowed within...
 #define WALKING_WINDOW_MS      2000  // ...this many ms before walking-mute kicks in
 #define WALKING_QUIET_MS       1000  // how long the mute lasts
@@ -631,6 +641,91 @@ honest answers here matter more than ticked boxes. a "no, this still looks impro
 
 ---
 
+# phase 9 — portfolio system
+
+> goal: turn the working shoe and everything that went into it into a thing someone else can read, understand, and respond to — without you in the room.
+
+phase 9 is **not about marketing**. it's about making sure the project survives the moment it leaves your hands. a future collaborator, a portfolio reviewer, or future-you in six months should be able to open this repo and understand the project as a piece of design thinking, not just a hardware build.
+
+there is no firmware deliverable. the deliverable is documentation that already mostly lives in the [`portfolio/`](./portfolio/) folder.
+
+## what's already in `portfolio/`
+
+| file                                                            | what it covers                                                              |
+| --------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| [system-architecture.md](./portfolio/system-architecture.md)       | the dataflow from heel-tap to LED frame, plus the memory budget             |
+| [interaction-storyboard.md](./portfolio/interaction-storyboard.md) | the wearer's journey, frame by frame                                        |
+| [emotional-mapping.md](./portfolio/emotional-mapping.md)           | per-mode design rationale: palette, timing, what each mode communicates     |
+| [gesture-vocabulary.md](./portfolio/gesture-vocabulary.md)         | the gestures the system recognises, what they mean, the design trade-offs   |
+| [photography-plan.md](./portfolio/photography-plan.md)             | the master shot list — every photo and video that should exist by phase 9   |
+
+each file is designed to map onto a portfolio spread. five files, four to five spreads, plus the photo archive captured across phases 1–8.
+
+## what to do in phase 9
+
+three things, in order:
+
+1. **review the docs against the live firmware.** `emotional-mapping.md` quotes RGB values; `gesture-vocabulary.md` quotes timings. if you've tweaked anything in `config.h` or `modes.h` during phase 8, the portfolio docs need to be brought back in sync. the validate.md phase 9 self-review section walks you through it.
+2. **show the docs to two outsiders.** hand them the five files (no live demo, no firmware). what do they understand? what doesn't land? a doc that consistently fails to land needs rewriting, not defending.
+3. **assemble the photo archive.** `photography-plan.md` is the master list. tick off what exists; capture what's missing. by the end of phase 9 every shot listed there should either exist with a caption or have a deliberate "not capturing" note next to it.
+
+## what to validate
+
+every phase 9 check sits in **[`validate.md`](./validate.md)** under "phase 9 — portfolio system". the most important items:
+
+- portfolio docs read correctly to a stranger with no project context
+- every cross-link between README, portfolio docs, validate.md, and experiments docs resolves
+- the photo archive covers every phase, with captions
+- one sketched mockup per portfolio spread before any final layout work
+
+## a note on tone
+
+the portfolio is *not* a sales document. the strongest version of it shows the gap between what you tried and what you learned. a single page of three failed heel-module mockups, captioned honestly, is worth more than a polished hero shot. process beats product — that rule applies all the way through.
+
+---
+
+# phase 10 — experimental expansion
+
+> goal: keep the project open without losing what makes it good.
+
+phase 10 is the speculative layer. four expansions are designed in [`experiments/`](./experiments/) — none of them are built. each is a paper architecture detailed enough that future-you (or a collaborator) could pick one up and start building without re-deriving the constraints.
+
+> not to be confused with `firmware/experiments/` — that folder holds working Arduino sketches (the phase 1 hello-world archive, the piezo debug tool). the top-level `experiments/` folder holds **paper designs for hardware-altering expansions**.
+
+## the four proposals
+
+| proposal                                                          | what it adds                                                          | hardware needed             |
+| ----------------------------------------------------------------- | --------------------------------------------------------------------- | --------------------------- |
+| [adaptive-brightness.md](./experiments/adaptive-brightness.md)    | shoe scales itself to ambient light                                   | LDR + 10kΩ                  |
+| [haptic-feedback.md](./experiments/haptic-feedback.md)            | tactile gesture confirmation via heel vibration                       | small vibration motor + driver |
+| [motion-reactive.md](./experiments/motion-reactive.md)            | accelerometer modulates brightness during stillness / walking / jumps | MPU6050                     |
+| [dual-shoe-sync.md](./experiments/dual-shoe-sync.md)              | two shoes mirror each other; two wearers can "handshake" emotionally  | ESP32 nano (recommended)    |
+
+each proposal contains: what it adds, why it's interesting, parts list, architecture sketch, risks and open questions, and the decision points you'd need to answer before building.
+
+## the recommended order (if you actually pursue any)
+
+1. **adaptive-brightness** — easiest, smallest BOM addition, immediately improves real-world wearability
+2. **haptic-feedback** — small hardware change, big UX win, low risk
+3. **motion-reactive** — bigger architectural shift, needs an accelerometer and rolling state
+4. **dual-shoe-sync** — the most interesting and the biggest commitment; probably needs an MCU upgrade to ESP32
+
+each builds on the last in complexity and impact. don't try to do all four in one sprint — each is a phase in itself.
+
+## what to validate
+
+phase 10 validation is the **decision-making**, not the building. every check sits in **[`validate.md`](./validate.md)** under "phase 10 — experimental expansion". the most important items:
+
+- each of the four proposals has a dated `pursue / defer / kill` decision with reasoning
+- if you're actually pursuing one — parts ordered, debug sketch written, integration behind a `#ifdef` guard so phases 1–6 still flash cleanly
+- the recommended sequencing has been read and either agreed with or overridden in writing
+
+## the principle
+
+the test for whether an expansion is worth building: **what new emotional capability does this unlock?** every proposal in `experiments/` is designed to pass that test. if a future idea can't pass it, don't add it — even if it's technically interesting. the project's strength is its narrowness.
+
+---
+
 ## a note on safety
 
 this is a wearable. the battery sits on a person's foot. that means a few rules are non-negotiable:
@@ -648,7 +743,7 @@ if any of these cannot be guaranteed, the shoe does not get worn. simple as that
 
 most wearables shout. this one is trying to whisper. it is an experiment in whether technology, when given a quiet enough voice, can carry something honest about how a person is feeling — without forcing them to type, speak, or perform.
 
-the answer is still being worked out. the changelog is the working notebook.
+the answer is still being worked out. **[`validate.md`](./validate.md)** is the running record of what's been built and tested; the [`portfolio/`](./portfolio/) folder is where the design thinking lives.
 
 ---
 

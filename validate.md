@@ -672,6 +672,159 @@
 
 ---
 
+## phase 9 — portfolio system
+
+> no firmware-side deliverable. the deliverable here is the portfolio itself: five working documents in `portfolio/` plus the photo/video archive captured across phases 1–8.
+> what success looks like: a stranger can read the five portfolio files plus the photo archive and understand the project well enough to discuss it intelligently — without needing the firmware, the changelog, or a live demo.
+
+### portfolio documents — self-review
+
+- [ ] read `portfolio/system-architecture.md` end-to-end. is the dataflow diagram still accurate vs. the live firmware?
+      _notes / drift to fix:_
+- [ ] read `portfolio/interaction-storyboard.md`. does each scene still match real behaviour after the latest firmware?
+      _notes:_
+- [ ] read `portfolio/emotional-mapping.md`. do the colour values match `firmware/main/modes.h`?
+      _notes / discrepancies:_
+- [ ] read `portfolio/gesture-vocabulary.md`. do the timings (`MULTI_TAP_WINDOW_MS`, walking budget) still match `config.h`?
+      _notes:_
+- [ ] read `portfolio/photography-plan.md`. is every phase's shot list reachable given what's actually been captured?
+      _shots still missing:_
+
+### portfolio documents — outsider review
+
+- [ ] handed all five files to **one outsider** with no context. what did they understand? what didn't land?
+      _person 1 — what they got, what they missed:_
+- [ ] handed all five files to **a second outsider**. same exercise.
+      _person 2 — what they got, what they missed:_
+- [ ] noted any document that consistently fails to land
+      _file + how it should be rewritten:_
+
+### photo / video archive completeness
+
+- [ ] phase 1 archive items present (see `photography-plan.md` § phase 1)
+      _missing items:_
+- [ ] phase 2 archive items present
+      _missing items:_
+- [ ] phase 3 archive items present (six mode clips, six stills, transition video, environment comparison)
+      _missing items:_
+- [ ] phase 4 archive items present
+      _missing items:_
+- [ ] phase 5 archive items present (piezo under insole, LED routing, heel module open/closed, walking video, iteration archive)
+      _missing items:_
+- [ ] phase 6 archive items present (idle timelapse, wake clip, public/private toggle clip)
+      _missing items:_
+- [ ] phase 7 archive items present (flex test, thermal, reinforcement, non-negotiable proof)
+      _missing items:_
+- [ ] phase 8 archive items present (diffusion comparison, hero shot, finished walking video, wire-visibility paired shot)
+      _missing items:_
+- [ ] master archive folder organised by phase, every file lower_case_underscored, no `IMG_xxxx` filenames anywhere
+      _path / structure notes:_
+- [ ] every photo has a one-line caption written somewhere (in validate.md under its phase, or in a sidecar `.txt`)
+      _convention chosen:_
+
+### portfolio spread mockups
+
+- [ ] sketched a one-page mockup of the **system-architecture** spread
+      _filename / location:_
+- [ ] sketched the **interaction-storyboard** spread (1–2 pages, illustrated frame by frame)
+      _filename / location:_
+- [ ] sketched the **emotional-mapping** spread (per-mode panel: palette swatch + timing curve + photo)
+      _filename / location:_
+- [ ] sketched the **gesture-vocabulary** spread
+      _filename / location:_
+- [ ] sketched the **process / failure archive** spread (the unsexy but credible content from phases 5/7)
+      _filename / location:_
+
+### cross-link audit
+
+- [ ] every internal link in the README resolves (no 404s in markdown previews)
+      _broken links found:_
+- [ ] every internal link in `portfolio/README.md` resolves
+      _notes:_
+- [ ] every internal link in `experiments/README.md` resolves
+      _notes:_
+- [ ] `validate.md` references in README still point at sections that exist
+      _notes:_
+
+### portfolio archive (meta — yes, the portfolio gets a portfolio entry)
+
+- [ ] photo of the printed portfolio (or screenshot of the digital spread) at presentation quality
+      _filename:_
+- [ ] short paragraph: "the project, in one screen" — the elevator narrative
+      _link or excerpt:_
+- [ ] reflection paragraph: "what this project taught me about wearable interaction design"
+      _link or excerpt:_
+
+---
+
+## phase 10 — experimental expansion
+
+> no firmware-side deliverable. each entry in `experiments/` is a paper design, not an implementation. phase 10 validation is the **decision-making**: which proposals get pursued, which get parked, which get killed — and the reasoning for each.
+> what success looks like: each of the four proposals has an explicit, dated decision attached. nothing sits in limbo.
+
+### per-proposal decisions
+
+- [ ] **adaptive-brightness** — decision logged
+      _decision (pursue / defer / kill):_
+      _date:_
+      _reasoning:_
+      _if pursued — parts ordered, sketch started:_
+- [ ] **haptic-feedback** — decision logged
+      _decision:_
+      _date:_
+      _reasoning:_
+      _if pursued — parts ordered, sketch started:_
+- [ ] **motion-reactive** — decision logged
+      _decision:_
+      _date:_
+      _reasoning:_
+      _if pursued — accelerometer chosen (MPU6050 vs ADXL345), `motion_debug.ino` written:_
+- [ ] **dual-shoe-sync** — decision logged
+      _decision:_
+      _date:_
+      _reasoning:_
+      _if pursued — MCU upgrade decision (stay AVR with nRF24L01+ vs ESP32):_
+
+### sequencing decision
+
+- [ ] reviewed the recommended order in `experiments/README.md` (adaptive → haptic → motion → dual-sync)
+      _agreed / overridden:_
+- [ ] picked **the next one** to actually build, if any
+      _name + reasoning:_
+- [ ] committed to "no two at once" (each expansion is its own phase, not a parallel sprint)
+      _notes:_
+
+### prototyping notes (only fill in if you actually pursue an expansion)
+
+- [ ] parts arrived; bench-test before integration
+      _notes:_
+- [ ] standalone debug sketch written (analog of `piezo_debug` for the new sensor)
+      _filename:_
+- [ ] integrated into `firmware/main/` behind a `#ifdef ENABLE_X` guard so phase 1–6 still flashes cleanly
+      _notes:_
+- [ ] `validate.md` updated with a new phase section for the expansion (e.g. "phase 11 — adaptive brightness")
+      _section added:_
+- [ ] `portfolio/emotional-mapping.md` (or a new `portfolio/` doc) updated if the expansion adds emotional capability
+      _notes:_
+
+### proposals deferred / killed (write down so future-you doesn't re-derive the rejection)
+
+- [ ] reviewed the "what's NOT in here" list in `experiments/README.md` (bluetooth app, AI emotion, camera, GPS)
+      _any to revisit?_
+- [ ] new candidate ideas surfaced during phase 1–8 work, written up to the experiments template
+      _filenames added:_
+
+### portfolio archive (only if an expansion was actually built)
+
+- [ ] short video of the expansion in real wear
+      _filename:_
+- [ ] before/after comparison: same scene, with and without the expansion
+      _filename:_
+- [ ] one paragraph: "what new emotional capability this unlocked" — written honestly, including failures
+      _link or excerpt:_
+
+---
+
 ## conventions for future phases
 
 each phase from phase 6 onward will add a new section here as its hardware-side checks come due. the structure stays the same:
