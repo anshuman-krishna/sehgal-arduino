@@ -2,7 +2,7 @@
 
 > an experimental wearable shoe that turns intentional foot taps into emotional light.
 
-this project lives at the intersection of **wearable technology**, **interaction design**, and **emotional communication**. it is not a blinking-LED demo. it is a small, ongoing exploration into how a single human gesture — a tap of the heel — can become a readable emotional expression.
+this project lives at the intersection of **wearable technology**, **interaction design**, and **emotional communication**. it is not a blinking-LED demo. it is a small, ongoing exploration into how a single human gesture, a tap of the heel, can become a readable emotional expression.
 
 the interaction loop is intentionally simple:
 
@@ -60,7 +60,7 @@ all components are commonly available. nothing exotic.
 
 ## phase overview
 
-this is a long project broken into small, testable phases. each one is a stable artifact you can hold up and look at — finish one before starting the next.
+this is a long project broken into small, testable phases. each one is a stable artifact you can hold up and look at, finish one before starting the next.
 
 | phase | name                              | status                       |
 | ----- | --------------------------------- | ---------------------------- |
@@ -80,17 +80,17 @@ each phase ends with both a working artifact and a written reflection on what wa
 
 ## tracking your progress
 
-as you wire, flash, and wear each phase, log what you observe in **[`validate.md`](./validate.md)** at the repo root. it's a structured checklist of every hardware-side check, with space under each item for measurements, notes, and decisions. tick items as you verify them. the file is the project's public hardware-truth logbook — it's how anyone reading the repo can see *what was actually built*, not just what was written.
+as you wire, flash, and wear each phase, log what you observe in **[`validate.md`](./validate.md)** at the repo root. it's a structured checklist of every hardware-side check, with space under each item for measurements, notes, and decisions. tick items as you verify them. the file is the project's public hardware-truth logbook, it's how anyone reading the repo can see *what was actually built*, not just what was written.
 
 ## the rest of the repository
 
-beyond firmware and validation, the project has two more layers — both of which become primary material in phase 9.
+beyond firmware and validation, the project has two more layers, both of which become primary material in phase 9.
 
 | folder              | what it holds                                                        |
 | ------------------- | -------------------------------------------------------------------- |
-| [`firmware/`](./firmware/) | the shoe's brain — the multi-file arduino sketch in `firmware/main/` |
+| [`firmware/`](./firmware/) | the shoe's brain, the multi-file arduino sketch in `firmware/main/` |
 | [`portfolio/`](./portfolio/) | five working documents that explain *what was built and why*         |
-| [`experiments/`](./experiments/) | four phase 10 design proposals — paper architectures, not yet built |
+| [`experiments/`](./experiments/) | four phase 10 design proposals, paper architectures, not yet built |
 
 if you only have time to read three things in this repo: this README, `portfolio/system-architecture.md`, and `portfolio/interaction-storyboard.md`. those three together explain the whole project.
 
@@ -102,7 +102,7 @@ if you only have time to read three things in this repo: this README, `portfolio
 
 ### install the arduino IDE
 
-download from [arduino.cc](https://www.arduino.cc/en/software). open it. from **tools → board** select **Arduino Nano**. some Nano clones use the older bootloader — if uploading later fails, switch the processor option to **ATmega328P (Old Bootloader)**. this is normal.
+download from [arduino.cc](https://www.arduino.cc/en/software). open it. from **tools → board** select **Arduino Nano**. some Nano clones use the older bootloader, if uploading later fails, switch the processor option to **ATmega328P (Old Bootloader)**. this is normal.
 
 ### install the FastLED library
 
@@ -116,11 +116,11 @@ you are now ready for phase 1.
 
 ---
 
-# phase 1 — hardware bring-up
+# phase 1: hardware bring-up
 
 > goal: prove your power, your strip, and your nano are all happy. no sensor yet. just light.
 
-this is the cheapest possible test of the hardware path. if this works, you know the rest of the project has a solid foundation. if it doesn't, **stop and fix it here** — adding a sensor on top of a flaky LED setup will only make debugging harder later.
+this is the cheapest possible test of the hardware path. if this works, you know the rest of the project has a solid foundation. if it doesn't, **stop and fix it here**, adding a sensor on top of a flaky LED setup will only make debugging harder later.
 
 ## phase 1 wiring
 
@@ -153,7 +153,7 @@ this is the cheapest possible test of the hardware path. if this works, you know
 - [ ] D6 → 330Ω resistor → strip's **DIN** pin (not DOUT)
 - [ ] strip 5V → arduino 5V (for short prototype tests, USB power is fine)
 - [ ] strip GND → arduino GND
-- [ ] 1000µF capacitor across 5V and GND, **as close to the strip as you can get it** — this is what stops the inrush flicker
+- [ ] 1000µF capacitor across 5V and GND, **as close to the strip as you can get it**, this is what stops the inrush flicker
 - [ ] capacitor polarity correct: long leg to 5V, short leg / striped side to GND
 - [ ] no metal pins touching each other
 
@@ -197,17 +197,17 @@ this is the bootloader handshake failing. try **tools → processor → ATmega32
 **strip flashes white at the moment of power-on.**
 this is expected. the data line is undefined for a brief moment before the firmware begins driving it. the 1000µF cap minimises it but cannot eliminate it. it will not damage anything.
 
-once phase 1 is solid — meaning you can power-cycle the nano three or four times in a row and always get the same calm-blue breathing baseline — move on to phase 2.
+once phase 1 is solid, meaning you can power-cycle the nano three or four times in a row and always get the same calm-blue breathing baseline, move on to phase 2.
 
 ---
 
-# phase 2 — adding the piezo tap sensor
+# phase 2: adding the piezo tap sensor
 
 > goal: when you tap the sensor, the shoe responds. tap → warm flash → eased decay back to calm.
 
 phase 2 introduces the input side of the interaction loop. you keep everything from phase 1 wired exactly as it was, then add the piezo sensor on top.
 
-## phase 2 wiring (additions only — keep the LED wiring from phase 1)
+## phase 2 wiring (additions only, keep the LED wiring from phase 1)
 
 ```
             ┌─────────────────┐
@@ -236,7 +236,7 @@ phase 2 introduces the input side of the interaction loop. you keep everything f
 
 > 💡 if you have it on hand, you can also add two back-to-back 1N4148 diodes across A0 and GND. they clamp very large piezo voltage spikes and protect the analog pin. it's not strictly required for tapping with a finger, but it's a nice safety margin if you plan to actually stomp.
 
-## step 1 — tune your threshold (use the debug sketch)
+## step 1, tune your threshold (use the debug sketch)
 
 before flashing the integrated sketch, you need to know **what tap looks like on your hardware**. every piezo and every mounting surface produces different numbers.
 
@@ -258,11 +258,11 @@ now tap the sensor with your finger.
 - your typical light-tap peak (call it `light_tap`)
 - your typical accidental-handling peak (sliding a finger across, brushing the wire) (call it `noise_peak`)
 
-a good threshold sits **above `noise_peak` but below `light_tap`**. usually somewhere in the 100–200 range. write this number down — it goes into the next sketch.
+a good threshold sits **above `noise_peak` but below `light_tap`**. usually somewhere in the 100–200 range. write this number down, it goes into the next sketch.
 
 > 🔧 if your at-rest value is high (above 50) or visibly noisy on the plotter, the **2.2MΩ bleed resistor is missing or wired wrong**. check that before tuning further. this is the #1 cause of bad piezo behaviour.
 
-## step 2 — flash the integrated sketch
+## step 2, flash the integrated sketch
 
 1. open `firmware/main/main.ino`
 2. find this line near the top:
@@ -279,17 +279,17 @@ a good threshold sits **above `noise_peak` but below `light_tap`**. usually some
 - settled: same calm-blue breathing baseline as phase 1
 - when you tap the piezo: the strip flashes to a warm amber, then eases smoothly back into the calm-blue baseline over about 600ms
 
-every intentional tap should produce one — and only one — flash. that's the system feeling your gesture.
+every intentional tap should produce one, and only one, flash. that's the system feeling your gesture.
 
 ## what can go wrong (and how to fix it)
 
 **no response to taps at all.**
 - check the piezo wiring polarity: red to A0, black to GND
-- open the serial monitor at 115200 and look for `tap: <value>` lines when you tap. if you see nothing, the threshold is too high — lower `PIEZO_TAP_THRESHOLD` and re-upload.
+- open the serial monitor at 115200 and look for `tap: <value>` lines when you tap. if you see nothing, the threshold is too high, lower `PIEZO_TAP_THRESHOLD` and re-upload.
 - if you still see nothing, go back to the debug sketch and verify the piezo is producing readable spikes at all. a cracked piezo or a broken solder joint at the disc edge is a common silent failure.
 
 **every tap fires multiple flashes in quick succession.**
-the piezo is "ringing" — its physical structure vibrates after a hit and produces decaying after-shock spikes. that's why the sketch enforces a `PIEZO_DEBOUNCE_MS` window of 180ms. if you're still seeing multi-fires, raise it to 250ms.
+the piezo is "ringing", its physical structure vibrates after a hit and produces decaying after-shock spikes. that's why the sketch enforces a `PIEZO_DEBOUNCE_MS` window of 180ms. if you're still seeing multi-fires, raise it to 250ms.
 
 **it fires on its own with no tap.**
 two possibilities:
@@ -297,31 +297,31 @@ two possibilities:
 - the **2.2MΩ resistor is missing or loose**. without it the piezo's resting charge drifts, and any vibration nearby (your phone buzzing, a slammed door, footsteps in the room) registers.
 
 **it fires when i walk but not when i tap.**
-this is the classic walking-noise problem. you've found one of the central design challenges of the project — phase 4 (interaction intelligence) is where we filter walking impacts out using timing windows and gesture interpretation. for now, accept the false-triggers and note the patterns you observe. they are useful data.
+this is the classic walking-noise problem. you've found one of the central design challenges of the project, phase 4 (interaction intelligence) is where we filter walking impacts out using timing windows and gesture interpretation. for now, accept the false-triggers and note the patterns you observe. they are useful data.
 
 **the flash is too short / too bright / wrong colour.**
 all tunable. inside `main.ino`:
-- `TAP_FLASH_DURATION_MS` — how long the response lasts
-- `TAP_COLOR` — the colour of the flash (try `CRGB(255, 80, 30)` for a deeper amber, or `CRGB(220, 60, 200)` for a magenta)
-- `MAX_BRIGHTNESS` — overall brightness ceiling
+- `TAP_FLASH_DURATION_MS`, how long the response lasts
+- `TAP_COLOR`, the colour of the flash (try `CRGB(255, 80, 30)` for a deeper amber, or `CRGB(220, 60, 200)` for a magenta)
+- `MAX_BRIGHTNESS`, overall brightness ceiling
 
 try one change at a time so you can feel its effect.
 
 ---
 
-# phase 3 — bringing all six emotional modes online
+# phase 3: bringing all six emotional modes online
 
 > goal: see every mode work, switch between them, and check that each one is emotionally readable.
 
-phase 3 is mostly a "flash and watch" experience. there is no new wiring — phase 2's hardware setup carries forward unchanged. what changed is the firmware: `firmware/main/main.ino` now renders **six** emotional modes instead of just calm-blue, and switching between them is what taps do.
+phase 3 is mostly a "flash and watch" experience. there is no new wiring, phase 2's hardware setup carries forward unchanged. what changed is the firmware: `firmware/main/main.ino` now renders **six** emotional modes instead of just calm-blue, and switching between them is what taps do.
 
 the firmware was also reorganised into a small multi-file Arduino sketch:
 
 ```
 firmware/main/
-├── main.ino          entry point — boot, gesture dispatch, render loop
+├── main.ino          entry point, boot, gesture dispatch, render loop
 ├── config.h          all tuneable constants (pins, brightness, timings)
-├── animations.h      breathe, pulse, blend, gamma — shared primitives
+├── animations.h      breathe, pulse, blend, gamma, shared primitives
 ├── gestures.h        piezo → tap → gesture event classifier
 └── modes.h           the six emotional modes
 ```
@@ -350,19 +350,19 @@ then you tap.
 
 mode changes cross-fade smoothly over about 600ms. nothing should ever feel jarring.
 
-> the firmware also responds to **triple-tap** and dims itself when left alone. those are phase 6 features — explained below. you'll see them on the same upload; you don't need to flash anything new.
+> the firmware also responds to **triple-tap** and dims itself when left alone. those are phase 6 features, explained below. you'll see them on the same upload; you don't need to flash anything new.
 
 ## checking each mode is right
 
-flash the firmware, then cycle through every mode and look at it. record what you see in **[`validate.md`](./validate.md)** under the **phase 3** section. there is a specific item there for showing each mode to **an outsider** and asking them what feeling it gives them — that test is the most important one in the whole phase, because emotional readability is the bar the project exists to meet. if a mode confuses people, the mode needs work.
+flash the firmware, then cycle through every mode and look at it. record what you see in **[`validate.md`](./validate.md)** under the **phase 3** section. there is a specific item there for showing each mode to **an outsider** and asking them what feeling it gives them, that test is the most important one in the whole phase, because emotional readability is the bar the project exists to meet. if a mode confuses people, the mode needs work.
 
 ## what can go wrong
 
 **mode never changes when i tap.**
-the gesture system intentionally waits ~400ms after a tap to see if a second tap is coming (so it can distinguish single from double). if you tap once and don't see a mode change for almost half a second, that is by design. if it never changes, your `PIEZO_TAP_THRESHOLD` is probably too high — re-run the debug sketch and check.
+the gesture system intentionally waits ~400ms after a tap to see if a second tap is coming (so it can distinguish single from double). if you tap once and don't see a mode change for almost half a second, that is by design. if it never changes, your `PIEZO_TAP_THRESHOLD` is probably too high, re-run the debug sketch and check.
 
 **every tap fires multiple mode changes.**
-ring-out — the piezo's natural mechanical bounce after a hit looks like a second tap. open `firmware/main/config.h` and raise `PIEZO_DEBOUNCE_MS` from 180 to 250.
+ring-out, the piezo's natural mechanical bounce after a hit looks like a second tap. open `firmware/main/config.h` and raise `PIEZO_DEBOUNCE_MS` from 180 to 250.
 
 **mode changes randomly when i'm just holding the shoe.**
 something is jostling the piezo. check the wiring is clean and the bleed resistor is in place. if you cup the shoe in your hand and stand still, it should be silent. if it isn't, there's noise getting in.
@@ -371,11 +371,11 @@ something is jostling the piezo. check the wiring is clean and the bleed resisto
 your two taps are arriving more than 400ms apart. either tap faster, or raise `MULTI_TAP_WINDOW_MS` in `config.h` (try 500–600ms).
 
 **the strip flickers during transitions.**
-you may be running out of arduino SRAM — the cross-fade uses two scratch buffers in addition to the live one. if your `LED_COUNT` is far above 30, lower it or skip the cross-fade. log the issue under phase 3 in **[`validate.md`](./validate.md)**.
+you may be running out of arduino SRAM, the cross-fade uses two scratch buffers in addition to the live one. if your `LED_COUNT` is far above 30, lower it or skip the cross-fade. log the issue under phase 3 in **[`validate.md`](./validate.md)**.
 
 ---
 
-# phase 4 — the gesture intelligence layer
+# phase 4: the gesture intelligence layer
 
 phase 4 is what turns "the shoe felt a tap" into "the shoe understood what you meant." it is implemented inside `firmware/main/gestures.h` and is already running as part of the phase 3 firmware you just uploaded.
 
@@ -406,42 +406,42 @@ most users won't need to change these. but: log in **[`validate.md`](./validate.
 
 ## what to validate
 
-every phase 4 check sits in **[`validate.md`](./validate.md)** under "phase 4 — gesture intelligence". the most important items:
+every phase 4 check sits in **[`validate.md`](./validate.md)** under "phase 4, gesture intelligence". the most important items:
 
 - single-tap success rate over 10 deliberate taps
 - double-tap success rate over 10 deliberate double-taps
-- walking on hard floor for 10 steps — does walking-mute kick in correctly?
-- power-cycle test — does the shoe boot back into the mode you left it in?
+- walking on hard floor for 10 steps, does walking-mute kick in correctly?
+- power-cycle test, does the shoe boot back into the mode you left it in?
 
 ---
 
-# phase 5 — wearable integration
+# phase 5: wearable integration
 
 > goal: take everything off the breadboard and put it on a foot.
 
-phase 5 is where the project stops being "an electronics prototype" and starts being "a wearable." there is no new firmware. there are decisions about mounting, materials, comfort, balance, safety — and a lot of small physical iterations.
+phase 5 is where the project stops being "an electronics prototype" and starts being "a wearable." there is no new firmware. there are decisions about mounting, materials, comfort, balance, safety, and a lot of small physical iterations.
 
 ## the high-level recipe
 
-1. **piezo** — slips under the heel insole, with the wires routed along the inside of the shoe wall and tucked behind the heel module. the bleed resistor goes inside the heel module enclosure, not loose under the foot.
-2. **LED strip** — runs along the outer sole edge, oriented so the LEDs face outward. ideally protected by a thin diffuser (frosted silicone tube, translucent fabric, or a 3D-printed channel).
-3. **heel module** — a small enclosure on the back of the heel that houses the arduino nano + battery. removable for maintenance. accessible switch on the side.
-4. **wires** — short, insulated, routed away from flex zones. every solder joint heat-shrunk before the shoe goes on a foot.
+1. **piezo**, slips under the heel insole, with the wires routed along the inside of the shoe wall and tucked behind the heel module. the bleed resistor goes inside the heel module enclosure, not loose under the foot.
+2. **LED strip**, runs along the outer sole edge, oriented so the LEDs face outward. ideally protected by a thin diffuser (frosted silicone tube, translucent fabric, or a 3D-printed channel).
+3. **heel module**, a small enclosure on the back of the heel that houses the arduino nano + battery. removable for maintenance. accessible switch on the side.
+4. **wires**, short, insulated, routed away from flex zones. every solder joint heat-shrunk before the shoe goes on a foot.
 
 > ⚠️ before any walking test: **the battery must live in the external heel module, never under any compression zone.** this is non-negotiable. lithium cells under repeated foot-pressure are dangerous.
 
 ## how to work through phase 5
 
-phase 5 is checklist-driven, not "flash and see." open **[`validate.md`](./validate.md)** under "phase 5 — wearable integration" and walk down the list. it is structured to push you through:
+phase 5 is checklist-driven, not "flash and see." open **[`validate.md`](./validate.md)** under "phase 5, wearable integration" and walk down the list. it is structured to push you through:
 
-- piezo placement — does it still detect taps once it's under the insole?
-- LED placement — does it survive the foot bending?
-- heel module — does it press into your skin?
-- walking comfort tests — 5 minutes, 15 minutes, 30 minutes, 1 hour
-- weight balance — does the modded shoe feel asymmetric?
-- safety verification — every check is non-negotiable
+- piezo placement, does it still detect taps once it's under the insole?
+- LED placement, does it survive the foot bending?
+- heel module, does it press into your skin?
+- walking comfort tests, 5 minutes, 15 minutes, 30 minutes, 1 hour
+- weight balance, does the modded shoe feel asymmetric?
+- safety verification, every check is non-negotiable
 
-each item has space for notes, photos, and decisions. iteration is expected. the first heel module you build will probably be wrong. the second one will probably also be wrong. that's normal — the iteration is the project, not a failure to plan.
+each item has space for notes, photos, and decisions. iteration is expected. the first heel module you build will probably be wrong. the second one will probably also be wrong. that's normal, the iteration is the project, not a failure to plan.
 
 ## what to capture for the portfolio
 
@@ -449,9 +449,9 @@ phase 5 is the visually richest phase so far. **[`validate.md`](./validate.md)**
 
 ---
 
-# phase 6 — emotional communication layer
+# phase 6: emotional communication layer
 
-> goal: give the shoe an inner life. it should feel like it has moods, attention, and self-restraint — not just a gesture-driven mode picker.
+> goal: give the shoe an inner life. it should feel like it has moods, attention, and self-restraint, not just a gesture-driven mode picker.
 
 phase 6 is firmware-only. there is no new wiring. the same `firmware/main/main.ino` you flashed for phase 3 / 4 already contains it. flashing the latest from this repo gives you all of it.
 
@@ -461,14 +461,14 @@ three layers, each subtle but meaningful:
 
 ### 1. idle dim-down (the shoe gets sleepy when ignored)
 
-after **30 seconds** with no taps, the shoe begins fading toward a dimmer "idle" brightness. by the **2 minute** mark, it has fully settled into a low-energy ambient state at about 20% brightness. it never goes off — the emotional mode stays the same, just quieter, like the shoe is at rest.
+after **30 seconds** with no taps, the shoe begins fading toward a dimmer "idle" brightness. by the **2 minute** mark, it has fully settled into a low-energy ambient state at about 20% brightness. it never goes off, the emotional mode stays the same, just quieter, like the shoe is at rest.
 
 any classified gesture (single, double, or triple tap) instantly wakes it back to full brightness.
 
 this matters because:
 - a shoe that always blasts at 100% looks like a toy
 - a shoe that gracefully recedes when ignored looks like it has presence
-- the wearer doesn't have to "turn off" their shoe — it knows when to fade
+- the wearer doesn't have to "turn off" their shoe, it knows when to fade
 
 ### 2. public / private toggle (triple-tap)
 
@@ -479,7 +479,7 @@ three taps within ~800ms total → the shoe toggles between **public** and **pri
 | public  | full expressive output (default)                                         |
 | private | scaled to ~50% brightness, otherwise unchanged                           |
 
-private isn't "off" — it's "subtle." the same emotional content, dimmed enough to be personal rather than performative. on a date, in a meeting, at a quiet dinner: triple-tap and the shoe whispers instead of speaks.
+private isn't "off", it's "subtle." the same emotional content, dimmed enough to be personal rather than performative. on a date, in a meeting, at a quiet dinner: triple-tap and the shoe whispers instead of speaks.
 
 the private/public state is **persisted in EEPROM**, like the current mode. power-cycle the shoe and it boots back into whichever signaling level you left it in.
 
@@ -512,7 +512,7 @@ if "30 seconds" feels too aggressive (the shoe dims while you're still wearing i
 
 ## what to validate
 
-every phase 6 check sits in **[`validate.md`](./validate.md)** under "phase 6 — emotional communication layer". the most important items:
+every phase 6 check sits in **[`validate.md`](./validate.md)** under "phase 6, emotional communication layer". the most important items:
 
 - triple-tap success rate over 10 attempts
 - visual difference between public and private is meaningful but not jarring
@@ -529,21 +529,21 @@ your three taps are too slow. a triple-tap needs all three within roughly 800ms 
 likely the third spike is piezo ring-out from the second tap. raise `PIEZO_DEBOUNCE_MS` from 180 to 220–250ms to suppress the post-tap aftershocks.
 
 **the shoe never dims.**
-either you're triggering taps inadvertently every few seconds, or the walking-mute is misclassifying ambient vibration as taps. check the serial monitor — every classified tap prints `mode -> ...` or `private = ...`. if you see those at random, the threshold is too low. raise `PIEZO_TAP_THRESHOLD`.
+either you're triggering taps inadvertently every few seconds, or the walking-mute is misclassifying ambient vibration as taps. check the serial monitor, every classified tap prints `mode -> ...` or `private = ...`. if you see those at random, the threshold is too low. raise `PIEZO_TAP_THRESHOLD`.
 
 **the shoe dims even though i'm wearing it actively.**
-phase 6 dim-down is based on **classified gestures**, not motion. if you're walking around without tapping, idle decay still kicks in. that's by design — walking alone doesn't reset interaction. if you want it to, that's a phase 7+ feature (motion-aware idle reset via accelerometer). log it as an observation in `validate.md` if it bothers you in real wear.
+phase 6 dim-down is based on **classified gestures**, not motion. if you're walking around without tapping, idle decay still kicks in. that's by design, walking alone doesn't reset interaction. if you want it to, that's a phase 7+ feature (motion-aware idle reset via accelerometer). log it as an observation in `validate.md` if it bothers you in real wear.
 
 **private mode looks too dim / not dim enough.**
-tune `PRIVATE_BRIGHTNESS_SCALE` in `config.h`. the test is honest: turn private on, walk into a dim social setting, and ask yourself "would i be comfortable wearing this here?" — if the answer is no, dim it more.
+tune `PRIVATE_BRIGHTNESS_SCALE` in `config.h`. the test is honest: turn private on, walk into a dim social setting, and ask yourself "would i be comfortable wearing this here?", if the answer is no, dim it more.
 
 ---
 
-# phase 7 — safety & reliability
+# phase 7: safety & reliability
 
 > goal: stop being a prototype, start being a thing you can wear every day without worrying.
 
-phase 7 is **entirely physical**. there is no firmware deliverable. it is a focused round of stress, durability, and safety testing on whatever you assembled in phase 5. nothing here is glamorous — it is the unglamorous work that decides whether the project is ready to leave the workbench.
+phase 7 is **entirely physical**. there is no firmware deliverable. it is a focused round of stress, durability, and safety testing on whatever you assembled in phase 5. nothing here is glamorous, it is the unglamorous work that decides whether the project is ready to leave the workbench.
 
 ## what phase 7 actually checks
 
@@ -551,7 +551,7 @@ phase 7 is **entirely physical**. there is no firmware deliverable. it is a focu
 | ---------------------- | ----------------------------------------------------------------------- |
 | battery safety         | full discharge cycle without overheating; voltage stable under load     |
 | electrical isolation   | no exposed conductors anywhere on the shoe interior                     |
-| wire strain            | flex test at every bend point — does the wire survive 100+ cycles?      |
+| wire strain            | flex test at every bend point, does the wire survive 100+ cycles?      |
 | solder joint integrity | tug test on every joint; nothing should pull free                       |
 | enclosure robustness   | the heel module survives ordinary walking impacts                       |
 | thermal behaviour      | run cool-mode (highest current) for 10–20 min, check for hot spots      |
@@ -566,9 +566,9 @@ every item in this phase is a "until i've checked this i don't actually know if 
 
 ## how to work through phase 7
 
-phase 7 is checklist-driven. open **[`validate.md`](./validate.md)** under "phase 7 — safety & reliability" and walk through it. the structure mirrors phase 5: every item has a checkbox plus space for measurements, photos, and decisions.
+phase 7 is checklist-driven. open **[`validate.md`](./validate.md)** under "phase 7, safety & reliability" and walk through it. the structure mirrors phase 5: every item has a checkbox plus space for measurements, photos, and decisions.
 
-a few items in phase 7 are **non-negotiable** — they're flagged in the checklist. these include:
+a few items in phase 7 are **non-negotiable**, they're flagged in the checklist. these include:
 
 - battery in external module, never compression zone
 - no exposed conductors on the interior
@@ -580,15 +580,15 @@ if any non-negotiable item fails, the shoe doesn't get worn until it's fixed.
 ## what to capture for the portfolio
 
 - thermal photos (phone IR camera if you have one, or simply "hold your hand over it and note warm spots")
-- a flex-test video (bend the shoe back and forth 100 times, then test the LED strip — proof it survives)
+- a flex-test video (bend the shoe back and forth 100 times, then test the LED strip, proof it survives)
 - a "before/after" photo of any reinforcement you add (cable ties, hot glue, heat-shrink)
 - a written paragraph for each non-negotiable check, explaining what you tested and how
 
-phase 7 generates the most boring-looking portfolio content — and the most credible. real product engineering is mostly this kind of work.
+phase 7 generates the most boring-looking portfolio content, and the most credible. real product engineering is mostly this kind of work.
 
 ---
 
-# phase 8 — aesthetic refinement
+# phase 8: aesthetic refinement
 
 > goal: take a thing that *works* and make it a thing that *looks intentional*.
 
@@ -601,7 +601,7 @@ phase 8 is also mostly physical. there are some **small firmware tweaks possible
 | enclosure design     | material, finish, shape, removable vs sealed                            |
 | LED diffusion        | bare LEDs vs frosted silicone tube vs translucent fabric overlay        |
 | visible electronics  | hide the wires, or show them as intentional design language?            |
-| left/right symmetry  | (if dual shoe) — must look like a pair, not two prototypes              |
+| left/right symmetry  | (if dual shoe), must look like a pair, not two prototypes              |
 | visual identity      | colour palette of the enclosure, finish, branding (or its absence)      |
 | animation polish     | subtle timing-curve adjustments to make modes feel more "right"         |
 
@@ -611,20 +611,20 @@ these are all judgment calls. there is no objectively correct answer. what makes
 
 if you find a mode just doesn't *feel* right after wearing the shoe for a while, here's where to reach into `firmware/main/`:
 
-- **`config.h`** — every mode's period, brightness ceiling, and timing constant. a mode that feels "too fast" usually wants its `*_PERIOD_MS` raised by 20–30%.
-- **`modes.h`** — the actual colours each mode uses. shift the palette by adjusting `CRGB(r, g, b)` values. a happy that feels "too orange" can become slightly more yellow with `CRGB(255, 170, 30)`.
-- **`animations.h`** — the easing curves themselves. if all modes feel mechanical, `smoothstep` might want replacing with a softer curve like `t * t * t * (t * (t * 6 - 15) + 10)` (smootherstep).
+- **`config.h`**, every mode's period, brightness ceiling, and timing constant. a mode that feels "too fast" usually wants its `*_PERIOD_MS` raised by 20–30%.
+- **`modes.h`**, the actual colours each mode uses. shift the palette by adjusting `CRGB(r, g, b)` values. a happy that feels "too orange" can become slightly more yellow with `CRGB(255, 170, 30)`.
+- **`animations.h`**, the easing curves themselves. if all modes feel mechanical, `smoothstep` might want replacing with a softer curve like `t * t * t * (t * (t * 6 - 15) + 10)` (smootherstep).
 
-document any tweak you make in **[`validate.md`](./validate.md)** under "phase 8" — what you changed, why, and what it felt like before vs after.
+document any tweak you make in **[`validate.md`](./validate.md)** under "phase 8", what you changed, why, and what it felt like before vs after.
 
 ## diffusion experiments
 
 unfiltered WS2812B looks aggressive. some options to try, in roughly increasing effort:
 
-1. **frosted silicone tube** — sleeve the strip inside; the LEDs become a continuous glow rather than discrete dots
-2. **translucent fabric overlay** — softer, more "garment-like" look; harder to mount cleanly
-3. **3D-printed channel with diffuser top** — most controllable, requires CAD time
-4. **bare LEDs** — sometimes the right choice for a tech-forward aesthetic; commit to it visibly rather than apologetically
+1. **frosted silicone tube**, sleeve the strip inside; the LEDs become a continuous glow rather than discrete dots
+2. **translucent fabric overlay**, softer, more "garment-like" look; harder to mount cleanly
+3. **3D-printed channel with diffuser top**, most controllable, requires CAD time
+4. **bare LEDs**, sometimes the right choice for a tech-forward aesthetic; commit to it visibly rather than apologetically
 
 phase 8's validate.md section walks through capturing comparison photos for each diffusion option you try. those comparison shots are excellent portfolio material.
 
@@ -641,9 +641,9 @@ honest answers here matter more than ticked boxes. a "no, this still looks impro
 
 ---
 
-# phase 9 — portfolio system
+# phase 9: portfolio system
 
-> goal: turn the working shoe and everything that went into it into a thing someone else can read, understand, and respond to — without you in the room.
+> goal: turn the working shoe and everything that went into it into a thing someone else can read, understand, and respond to, without you in the room.
 
 phase 9 is **not about marketing**. it's about making sure the project survives the moment it leaves your hands. a future collaborator, a portfolio reviewer, or future-you in six months should be able to open this repo and understand the project as a piece of design thinking, not just a hardware build.
 
@@ -657,7 +657,7 @@ there is no firmware deliverable. the deliverable is documentation that already 
 | [interaction-storyboard.md](./portfolio/interaction-storyboard.md) | the wearer's journey, frame by frame                                        |
 | [emotional-mapping.md](./portfolio/emotional-mapping.md)           | per-mode design rationale: palette, timing, what each mode communicates     |
 | [gesture-vocabulary.md](./portfolio/gesture-vocabulary.md)         | the gestures the system recognises, what they mean, the design trade-offs   |
-| [photography-plan.md](./portfolio/photography-plan.md)             | the master shot list — every photo and video that should exist by phase 9   |
+| [photography-plan.md](./portfolio/photography-plan.md)             | the master shot list, every photo and video that should exist by phase 9   |
 
 each file is designed to map onto a portfolio spread. five files, four to five spreads, plus the photo archive captured across phases 1–8.
 
@@ -671,7 +671,7 @@ three things, in order:
 
 ## what to validate
 
-every phase 9 check sits in **[`validate.md`](./validate.md)** under "phase 9 — portfolio system". the most important items:
+every phase 9 check sits in **[`validate.md`](./validate.md)** under "phase 9, portfolio system". the most important items:
 
 - portfolio docs read correctly to a stranger with no project context
 - every cross-link between README, portfolio docs, validate.md, and experiments docs resolves
@@ -680,17 +680,17 @@ every phase 9 check sits in **[`validate.md`](./validate.md)** under "phase 9 �
 
 ## a note on tone
 
-the portfolio is *not* a sales document. the strongest version of it shows the gap between what you tried and what you learned. a single page of three failed heel-module mockups, captioned honestly, is worth more than a polished hero shot. process beats product — that rule applies all the way through.
+the portfolio is *not* a sales document. the strongest version of it shows the gap between what you tried and what you learned. a single page of three failed heel-module mockups, captioned honestly, is worth more than a polished hero shot. process beats product, that rule applies all the way through.
 
 ---
 
-# phase 10 — experimental expansion
+# phase 10: experimental expansion
 
 > goal: keep the project open without losing what makes it good.
 
-phase 10 is the speculative layer. four expansions are designed in [`experiments/`](./experiments/) — none of them are built. each is a paper architecture detailed enough that future-you (or a collaborator) could pick one up and start building without re-deriving the constraints.
+phase 10 is the speculative layer. four expansions are designed in [`experiments/`](./experiments/), none of them are built. each is a paper architecture detailed enough that future-you (or a collaborator) could pick one up and start building without re-deriving the constraints.
 
-> not to be confused with `firmware/experiments/` — that folder holds working Arduino sketches (the phase 1 hello-world archive, the piezo debug tool). the top-level `experiments/` folder holds **paper designs for hardware-altering expansions**.
+> not to be confused with `firmware/experiments/`, that folder holds working Arduino sketches (the phase 1 hello-world archive, the piezo debug tool). the top-level `experiments/` folder holds **paper designs for hardware-altering expansions**.
 
 ## the four proposals
 
@@ -705,24 +705,24 @@ each proposal contains: what it adds, why it's interesting, parts list, architec
 
 ## the recommended order (if you actually pursue any)
 
-1. **adaptive-brightness** — easiest, smallest BOM addition, immediately improves real-world wearability
-2. **haptic-feedback** — small hardware change, big UX win, low risk
-3. **motion-reactive** — bigger architectural shift, needs an accelerometer and rolling state
-4. **dual-shoe-sync** — the most interesting and the biggest commitment; probably needs an MCU upgrade to ESP32
+1. **adaptive-brightness**, easiest, smallest BOM addition, immediately improves real-world wearability
+2. **haptic-feedback**, small hardware change, big UX win, low risk
+3. **motion-reactive**, bigger architectural shift, needs an accelerometer and rolling state
+4. **dual-shoe-sync**, the most interesting and the biggest commitment; probably needs an MCU upgrade to ESP32
 
-each builds on the last in complexity and impact. don't try to do all four in one sprint — each is a phase in itself.
+each builds on the last in complexity and impact. don't try to do all four in one sprint, each is a phase in itself.
 
 ## what to validate
 
-phase 10 validation is the **decision-making**, not the building. every check sits in **[`validate.md`](./validate.md)** under "phase 10 — experimental expansion". the most important items:
+phase 10 validation is the **decision-making**, not the building. every check sits in **[`validate.md`](./validate.md)** under "phase 10, experimental expansion". the most important items:
 
 - each of the four proposals has a dated `pursue / defer / kill` decision with reasoning
-- if you're actually pursuing one — parts ordered, debug sketch written, integration behind a `#ifdef` guard so phases 1–6 still flash cleanly
+- if you're actually pursuing one, parts ordered, debug sketch written, integration behind a `#ifdef` guard so phases 1–6 still flash cleanly
 - the recommended sequencing has been read and either agreed with or overridden in writing
 
 ## the principle
 
-the test for whether an expansion is worth building: **what new emotional capability does this unlock?** every proposal in `experiments/` is designed to pass that test. if a future idea can't pass it, don't add it — even if it's technically interesting. the project's strength is its narrowness.
+the test for whether an expansion is worth building: **what new emotional capability does this unlock?** every proposal in `experiments/` is designed to pass that test. if a future idea can't pass it, don't add it, even if it's technically interesting. the project's strength is its narrowness.
 
 ---
 
@@ -733,7 +733,7 @@ this is a wearable. the battery sits on a person's foot. that means a few rules 
 - the battery lives in an **external heel module**, never under a compression zone.
 - all solder joints are heat-shrunk before any walking test.
 - there are no exposed conductors on the inside of the shoe.
-- power is switched externally and accessibly — the user must be able to kill power instantly.
+- power is switched externally and accessibly, the user must be able to kill power instantly.
 
 if any of these cannot be guaranteed, the shoe does not get worn. simple as that.
 
@@ -741,7 +741,7 @@ if any of these cannot be guaranteed, the shoe does not get worn. simple as that
 
 ## why this project exists
 
-most wearables shout. this one is trying to whisper. it is an experiment in whether technology, when given a quiet enough voice, can carry something honest about how a person is feeling — without forcing them to type, speak, or perform.
+most wearables shout. this one is trying to whisper. it is an experiment in whether technology, when given a quiet enough voice, can carry something honest about how a person is feeling, without forcing them to type, speak, or perform.
 
 the answer is still being worked out. **[`validate.md`](./validate.md)** is the running record of what's been built and tested; the [`portfolio/`](./portfolio/) folder is where the design thinking lives.
 

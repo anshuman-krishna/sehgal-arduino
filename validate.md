@@ -1,17 +1,17 @@
 # need to manually validate and check/cross
 
-> this file is the **manual-validation logbook**. every item below requires a human, real hardware, and observation. firmware-side progress is tracked in `testing/changelog.md` (local-only); hardware-truth lives here, in the public repo, as proof of what was actually built — not just written.
+> this file is the **manual-validation logbook**. every item below requires a human, real hardware, and observation. firmware-side progress is tracked in `testing/changelog.md` (local-only); hardware-truth lives here, in the public repo, as proof of what was actually built, not just written.
 
 ## how to use this file
 
 - each item is a checkbox. tick it (`- [x]`) once you have personally verified it on hardware.
 - under each item, write what you observed: actual values, surprises, photos taken, decisions made.
-- if a check fails, **don't delete it** — log the failure, log what you changed, and re-test. failures are valuable data and the most useful part of the portfolio.
+- if a check fails, **don't delete it**, log the failure, log what you changed, and re-test. failures are valuable data and the most useful part of the portfolio.
 - new phases add new sections. nothing is removed; this becomes the project's growing hardware archive.
 
 ---
 
-## phase 1 — hardware bring-up
+## phase 1: hardware bring-up
 
 > sketch under test: `firmware/experiments/phase1_hello_world/phase1_hello_world.ino`
 > what success looks like: soft fade-up to warm white, settles into calm-blue breathing baseline, runs cleanly for at least 60 seconds.
@@ -35,7 +35,7 @@
       _notes:_
 - [ ] strip can be power-cycled three times in a row with identical result
       _notes:_
-- [ ] colours render correctly (no GRB/RGB mismatch — blue is blue, not red)
+- [ ] colours render correctly (no GRB/RGB mismatch, blue is blue, not red)
       _notes:_
 
 ### power stability
@@ -65,11 +65,11 @@
 
 ---
 
-## phase 2 — piezo sensor
+## phase 2: piezo sensor
 
 > sketches under test:
->   1. `firmware/experiments/piezo_debug/piezo_debug.ino` — for tuning
->   2. `firmware/main/main.ino` — for integrated tap-response validation
+>   1. `firmware/experiments/piezo_debug/piezo_debug.ino`, for tuning
+>   2. `firmware/main/main.ino`, for integrated tap-response validation
 > what success looks like: every intentional tap produces exactly one warm-amber flash (or, with phase 3 firmware, exactly one mode change), no spontaneous fires when still.
 
 ### bleed resistor / resting behaviour
@@ -104,7 +104,7 @@
 - [ ] sensor wires don't induce false-fires when wiggled
       _notes:_
 
-### walking false-triggers (characterisation, not solution — phase 4 firmware tries to filter these)
+### walking false-triggers (characterisation, not solution, phase 4 firmware tries to filter these)
 
 - [ ] characterised on hard floor (tile / wood / concrete)
       _trigger frequency, gait notes:_
@@ -133,31 +133,31 @@
 
 ---
 
-## phase 3 — emotional lighting engine
+## phase 3: emotional lighting engine
 
 > sketch under test: `firmware/main/main.ino` (after compiling all six modes)
 > what success looks like: each mode is recognisable from across the room, transitions between modes feel intentional rather than abrupt, no flicker, no eye-strain at any brightness.
 
 ### each mode renders correctly
 
-- [ ] **calm** — soft blue, slow breathing (~4s/breath), feels grounded
+- [ ] **calm**, soft blue, slow breathing (~4s/breath), feels grounded
       _observation:_
-- [ ] **happy** — warm orange, faster pulse (~1.5s), feels open and energetic
+- [ ] **happy**, warm orange, faster pulse (~1.5s), feels open and energetic
       _observation:_
-- [ ] **alert** — sharp red, 4 Hz blink, feels attentive (not seizure-inducing)
+- [ ] **alert**, sharp red, 4 Hz blink, feels attentive (not seizure-inducing)
       _observation:_
-- [ ] **sleepy** — dim purple, very slow drift (~8s), capped at low brightness
+- [ ] **sleepy**, dim purple, very slow drift (~8s), capped at low brightness
       _observation:_
-- [ ] **flow** — cyan wave traveling along the strip
+- [ ] **flow**, cyan wave traveling along the strip
       _observation:_
-- [ ] **cool** — rainbow motion, hue rotates over time
+- [ ] **cool**, rainbow motion, hue rotates over time
       _observation:_
 
 ### transitions
 
 - [ ] cross-fade between any two modes feels smooth (no jump, no flicker)
       _notes:_
-- [ ] transition duration (~600ms) feels right — not too quick, not laggy
+- [ ] transition duration (~600ms) feels right, not too quick, not laggy
       _notes:_
 - [ ] cycling through all six modes back to calm feels natural
       _notes:_
@@ -174,9 +174,9 @@
 ### emotional readability test (the most important one)
 
 - [ ] showed each mode to **one outsider**, asked them to describe the feeling without prompting
-      _person 1 — observations per mode:_
+      _person 1, observations per mode:_
 - [ ] showed each mode to **a second outsider**, same exercise
-      _person 2 — observations per mode:_
+      _person 2, observations per mode:_
 - [ ] noted any modes that were misread or felt ambiguous
       _modes that need rework:_
 
@@ -198,9 +198,9 @@
 
 ---
 
-## phase 4 — gesture intelligence
+## phase 4: gesture intelligence
 
-> sketch under test: `firmware/main/main.ino` — single-tap / double-tap / walking-mute system live
+> sketch under test: `firmware/main/main.ino`, single-tap / double-tap / walking-mute system live
 > what success looks like: a deliberate single tap reliably advances mode; a deliberate double-tap reliably steps back; walking on hard floor doesn't fire random mode changes (or if it does, the walking-mute kicks in and stops the noise quickly).
 
 ### single-tap behaviour
@@ -225,9 +225,9 @@
 
 - [ ] standing still, no spurious mode changes for ≥60 seconds
       _notes:_
-- [ ] walking 10 steps on hard floor — mode changes / walking-mute behaviour:
+- [ ] walking 10 steps on hard floor, mode changes / walking-mute behaviour:
       _observation:_
-- [ ] walking 10 steps on carpet — mode changes / walking-mute behaviour:
+- [ ] walking 10 steps on carpet, mode changes / walking-mute behaviour:
       _observation:_
 - [ ] after walking stops, gestures resume working within ~1 second
       _notes:_
@@ -247,7 +247,7 @@
 
 - [ ] subjectively, the system feels "alive" rather than "delayed"
       _notes:_
-- [ ] decided whether to add an immediate visual ack on raw tap (today there isn't one — only the mode change)
+- [ ] decided whether to add an immediate visual ack on raw tap (today there isn't one, only the mode change)
       _decision + reasoning:_
 
 ### serial debug verification
@@ -266,7 +266,7 @@
 
 ---
 
-## phase 5 — wearable integration
+## phase 5: wearable integration
 
 > this phase has no firmware-side deliverable. it is the moment the project leaves the breadboard and becomes a thing you can wear. nearly everything below is observation, decision-making, and iteration.
 > what success looks like: a wearable shoe that feels comfortable for ≥30 minutes, stays electrically reliable while walking, and looks intentional rather than improvised.
@@ -326,20 +326,20 @@
 
 ### walking comfort tests
 
-- [ ] walked **5 minutes** in shoe — comfort observations
+- [ ] walked **5 minutes** in shoe, comfort observations
       _notes / pressure points:_
-- [ ] walked **15 minutes** in shoe — comfort + electrical reliability
+- [ ] walked **15 minutes** in shoe, comfort + electrical reliability
       _notes:_
-- [ ] walked **30 minutes** in shoe — any hot spots, pressure marks, fatigue?
+- [ ] walked **30 minutes** in shoe, any hot spots, pressure marks, fatigue?
       _notes:_
-- [ ] walked **1 hour** in shoe (stretch goal) — does it still feel like a shoe?
+- [ ] walked **1 hour** in shoe (stretch goal), does it still feel like a shoe?
       _notes:_
 
 ### weight & balance
 
 - [ ] left-right weight difference measured (single shoe vs un-modded shoe)
       _measured weight delta:_
-- [ ] subjective gait check — does the modified shoe feel asymmetric?
+- [ ] subjective gait check, does the modified shoe feel asymmetric?
       _notes:_
 
 ### environmental robustness
@@ -383,7 +383,7 @@
 
 ---
 
-## phase 6 — emotional communication layer
+## phase 6: emotional communication layer
 
 > sketch under test: `firmware/main/main.ino` (idle dim-down + public/private toggle live)
 > what success looks like: the shoe gracefully recedes when ignored, wakes instantly on a tap, and the public/private toggle is reliable and persistent.
@@ -403,7 +403,7 @@
 
 - [ ] public mode reads as "expressive" from across a room
       _notes:_
-- [ ] private mode reads as "subtle / personal" — same emotion, dimmer
+- [ ] private mode reads as "subtle / personal", same emotion, dimmer
       _notes:_
 - [ ] the difference between public and private is meaningful but not jarring
       _notes:_
@@ -421,9 +421,9 @@
 
 ### idle dim-down behaviour
 
-- [ ] no taps for 30s — visible fade begins toward dim-idle
+- [ ] no taps for 30s, visible fade begins toward dim-idle
       _observed timing / smoothness:_
-- [ ] no taps for 2 minutes — settled into deep-idle (~20% brightness)
+- [ ] no taps for 2 minutes, settled into deep-idle (~20% brightness)
       _observed brightness vs default:_
 - [ ] fade is smooth (not stepped), eyes can track it as gentle movement
       _notes:_
@@ -440,16 +440,16 @@
       _notes:_
 - [ ] tap during deep-idle restores full brightness instantly
       _notes:_
-- [ ] no flash or jump on wake — feels like a smooth resume
+- [ ] no flash or jump on wake, feels like a smooth resume
       _notes:_
 
 ### combined behaviour (the real test)
 
-- [ ] watched the shoe sit idle for 5 uninterrupted minutes — felt calming, not boring
+- [ ] watched the shoe sit idle for 5 uninterrupted minutes, felt calming, not boring
       _subjective notes:_
-- [ ] tapped to wake, cycled through modes, let it idle again — full loop felt natural
+- [ ] tapped to wake, cycled through modes, let it idle again, full loop felt natural
       _notes:_
-- [ ] showed the dim-down + wake behaviour to one outsider — what did they say?
+- [ ] showed the dim-down + wake behaviour to one outsider, what did they say?
       _outsider observation:_
 
 ### serial debug verification
@@ -468,7 +468,7 @@
 
 ---
 
-## phase 7 — safety & reliability
+## phase 7: safety & reliability
 
 > no firmware-side deliverable. this phase is structured stress, durability, and safety testing.
 > what success looks like: the wearable can fail in ordinary ways without becoming dangerous, and you have written evidence that you have actually checked it.
@@ -533,9 +533,9 @@
 
 ### thermal behaviour
 
-- [ ] cool-mode (highest current draw) run for 10 min — any hot spots?
+- [ ] cool-mode (highest current draw) run for 10 min, any hot spots?
       _hand-test or IR observations:_
-- [ ] cool-mode run for 20 min — any thermal degradation, flicker, or shutdown?
+- [ ] cool-mode run for 20 min, any thermal degradation, flicker, or shutdown?
       _notes:_
 - [ ] arduino nano regulator does not get uncomfortably hot
       _hand-test notes:_
@@ -558,11 +558,11 @@
 
 ### durability under realistic use
 
-- [ ] 1 hour continuous walking — shoe still functional, no failed components
+- [ ] 1 hour continuous walking, shoe still functional, no failed components
       _notes:_
-- [ ] 50 power-cycles in a row — EEPROM persists correctly each time
+- [ ] 50 power-cycles in a row, EEPROM persists correctly each time
       _notes:_
-- [ ] 100 mode-switching gestures in succession — no crashes or hangs
+- [ ] 100 mode-switching gestures in succession, no crashes or hangs
       _notes:_
 - [ ] one full day of normal wear (or as close as feasible)
       _failures observed:_
@@ -580,9 +580,9 @@
 
 ---
 
-## phase 8 — aesthetic refinement
+## phase 8: aesthetic refinement
 
-> mostly physical. small firmware tweaks possible (palette, timing curves) — log any that happen below.
+> mostly physical. small firmware tweaks possible (palette, timing curves), log any that happen below.
 > what success looks like: a shoe that reads as **intentional** rather than improvised, both up close and from across a room.
 > there are no objectively correct answers in this phase. honest decisions matter more than ticked boxes.
 
@@ -599,13 +599,13 @@
 
 ### LED diffusion experiments
 
-- [ ] tried bare LEDs — observation
+- [ ] tried bare LEDs, observation
       _notes / photo:_
-- [ ] tried frosted silicone tube — observation
+- [ ] tried frosted silicone tube, observation
       _notes / photo:_
-- [ ] tried translucent fabric overlay — observation
+- [ ] tried translucent fabric overlay, observation
       _notes / photo:_
-- [ ] tried 3D-printed channel + diffuser — observation
+- [ ] tried 3D-printed channel + diffuser, observation
       _notes / photo:_
 - [ ] **chose** a diffusion approach
       _final decision + reasoning:_
@@ -632,11 +632,11 @@
 
 ### visual identity
 
-- [ ] enclosure colour / finish chosen — does it match the shoe?
+- [ ] enclosure colour / finish chosen, does it match the shoe?
       _decision:_
 - [ ] decided whether to add any branding / logo / mark
       _decision + reasoning:_
-- [ ] overall aesthetic reads as ___ (one word — fill in)
+- [ ] overall aesthetic reads as ___ (one word, fill in)
       _word:_
 
 ### animation timing polish (firmware tweaks log)
@@ -672,12 +672,12 @@
 
 ---
 
-## phase 9 — portfolio system
+## phase 9: portfolio system
 
 > no firmware-side deliverable. the deliverable here is the portfolio itself: five working documents in `portfolio/` plus the photo/video archive captured across phases 1–8.
-> what success looks like: a stranger can read the five portfolio files plus the photo archive and understand the project well enough to discuss it intelligently — without needing the firmware, the changelog, or a live demo.
+> what success looks like: a stranger can read the five portfolio files plus the photo archive and understand the project well enough to discuss it intelligently, without needing the firmware, the changelog, or a live demo.
 
-### portfolio documents — self-review
+### portfolio documents, self-review
 
 - [ ] read `portfolio/system-architecture.md` end-to-end. is the dataflow diagram still accurate vs. the live firmware?
       _notes / drift to fix:_
@@ -690,12 +690,12 @@
 - [ ] read `portfolio/photography-plan.md`. is every phase's shot list reachable given what's actually been captured?
       _shots still missing:_
 
-### portfolio documents — outsider review
+### portfolio documents, outsider review
 
 - [ ] handed all five files to **one outsider** with no context. what did they understand? what didn't land?
-      _person 1 — what they got, what they missed:_
+      _person 1, what they got, what they missed:_
 - [ ] handed all five files to **a second outsider**. same exercise.
-      _person 2 — what they got, what they missed:_
+      _person 2, what they got, what they missed:_
 - [ ] noted any document that consistently fails to land
       _file + how it should be rewritten:_
 
@@ -746,44 +746,44 @@
 - [ ] `validate.md` references in README still point at sections that exist
       _notes:_
 
-### portfolio archive (meta — yes, the portfolio gets a portfolio entry)
+### portfolio archive (meta, yes, the portfolio gets a portfolio entry)
 
 - [ ] photo of the printed portfolio (or screenshot of the digital spread) at presentation quality
       _filename:_
-- [ ] short paragraph: "the project, in one screen" — the elevator narrative
+- [ ] short paragraph: "the project, in one screen", the elevator narrative
       _link or excerpt:_
 - [ ] reflection paragraph: "what this project taught me about wearable interaction design"
       _link or excerpt:_
 
 ---
 
-## phase 10 — experimental expansion
+## phase 10: experimental expansion
 
-> no firmware-side deliverable. each entry in `experiments/` is a paper design, not an implementation. phase 10 validation is the **decision-making**: which proposals get pursued, which get parked, which get killed — and the reasoning for each.
+> no firmware-side deliverable. each entry in `experiments/` is a paper design, not an implementation. phase 10 validation is the **decision-making**: which proposals get pursued, which get parked, which get killed, and the reasoning for each.
 > what success looks like: each of the four proposals has an explicit, dated decision attached. nothing sits in limbo.
 
 ### per-proposal decisions
 
-- [ ] **adaptive-brightness** — decision logged
+- [ ] **adaptive-brightness**, decision logged
       _decision (pursue / defer / kill):_
       _date:_
       _reasoning:_
-      _if pursued — parts ordered, sketch started:_
-- [ ] **haptic-feedback** — decision logged
+      _if pursued, parts ordered, sketch started:_
+- [ ] **haptic-feedback**, decision logged
       _decision:_
       _date:_
       _reasoning:_
-      _if pursued — parts ordered, sketch started:_
-- [ ] **motion-reactive** — decision logged
+      _if pursued, parts ordered, sketch started:_
+- [ ] **motion-reactive**, decision logged
       _decision:_
       _date:_
       _reasoning:_
-      _if pursued — accelerometer chosen (MPU6050 vs ADXL345), `motion_debug.ino` written:_
-- [ ] **dual-shoe-sync** — decision logged
+      _if pursued, accelerometer chosen (MPU6050 vs ADXL345), `motion_debug.ino` written:_
+- [ ] **dual-shoe-sync**, decision logged
       _decision:_
       _date:_
       _reasoning:_
-      _if pursued — MCU upgrade decision (stay AVR with nRF24L01+ vs ESP32):_
+      _if pursued, MCU upgrade decision (stay AVR with nRF24L01+ vs ESP32):_
 
 ### sequencing decision
 
@@ -802,7 +802,7 @@
       _filename:_
 - [ ] integrated into `firmware/main/` behind a `#ifdef ENABLE_X` guard so phase 1–6 still flashes cleanly
       _notes:_
-- [ ] `validate.md` updated with a new phase section for the expansion (e.g. "phase 11 — adaptive brightness")
+- [ ] `validate.md` updated with a new phase section for the expansion (e.g. "phase 11, adaptive brightness")
       _section added:_
 - [ ] `portfolio/emotional-mapping.md` (or a new `portfolio/` doc) updated if the expansion adds emotional capability
       _notes:_
@@ -820,7 +820,7 @@
       _filename:_
 - [ ] before/after comparison: same scene, with and without the expansion
       _filename:_
-- [ ] one paragraph: "what new emotional capability this unlocked" — written honestly, including failures
+- [ ] one paragraph: "what new emotional capability this unlocked", written honestly, including failures
       _link or excerpt:_
 
 ---
@@ -829,9 +829,9 @@
 
 each phase from phase 6 onward will add a new section here as its hardware-side checks come due. the structure stays the same:
 
-1. **what sketch is under test** — so future-you knows exactly which `.ino` produced these results
-2. **what success looks like** — a single paragraph of observable behaviour
-3. **grouped checklists** — short, specific, observable items
-4. **notes / measurements / filenames** under every item — empty strings to fill in
+1. **what sketch is under test**, so future-you knows exactly which `.ino` produced these results
+2. **what success looks like**, a single paragraph of observable behaviour
+3. **grouped checklists**, short, specific, observable items
+4. **notes / measurements / filenames** under every item, empty strings to fill in
 
 if a check fails: cross it out, write what changed, re-add it below. never delete failed history.
